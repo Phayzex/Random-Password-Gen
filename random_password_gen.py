@@ -17,7 +17,7 @@ ascii_map = {
 
 def generate_password(max_length: int = 12, blacklist_characters: str = ''):
     if not isinstance(max_length, int) or not isinstance(blacklist_characters, str):
-        raise ValueError("Incorrect parameter found.")
+        return "Incorrect parameter found."
 
     translation_table = str.maketrans('', '', blacklist_characters)
 

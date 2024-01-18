@@ -24,7 +24,7 @@ def generate_password(max_length: int = 12, blacklist_characters: str = ''):
     for k, v in ascii_map.items():
         ascii_map[k] = v.translate(translation_table)
 
-    enabled_lists = [ascii_map[key] for key, value in ascii_bool_map.items() if value]
+    enabled_lists = [ascii_map[key] for key, value in ascii_bool_map.items() if value and ascii_map[key]]
     password = ''.join(secrets.choice(secrets.choice(enabled_lists)) for _ in range(max_length))
 
     return password

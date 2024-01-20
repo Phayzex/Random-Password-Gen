@@ -1,18 +1,23 @@
 import secrets
 from string import ascii_lowercase, ascii_uppercase, punctuation, digits
 
-ascii_bool_map = {
-    'lower_letters': True,
-    'upper_letters': True,
-    'special_characters': True,
-    'numbers': True
-}
-
-ascii_map = {
-    'lower_letters': ascii_lowercase,
-    'upper_letters': ascii_uppercase,
-    'special_characters': punctuation,
-    'numbers': digits
+ascii_settings = {
+    'lower_letters': {
+        'enabled': True,
+        'characters': ascii_lowercase
+    },
+    'upper_letters': {
+        'enabled': True,
+        'characters': ascii_uppercase
+    },
+    'special_characters': {
+        'enabled': True,
+        'characters': punctuation
+    },
+    'numbers': {
+        'enabled': True,
+        'characters': digits
+    }
 }
 
 def generate_password(max_length: int = 12, blacklist_characters: str = ''):
@@ -21,10 +26,10 @@ def generate_password(max_length: int = 12, blacklist_characters: str = ''):
 
     translation_table = str.maketrans('', '', blacklist_characters)
 
-    for k, v in ascii_map.items():
-        ascii_map[k] = v.translate(translation_table)
+    for _, value in ascii_settings.items():
+        value['characters'] = value['characters'].translate(translation_table)
 
-    enabled_lists = [ascii_map[key] for key, value in ascii_bool_map.items() if value and ascii_map[key]]
+    enabled_lists = [value['characters'] for _, value in ascii_settings.items() if value['enabled'] and value['characters']]
     password = ''.join(secrets.choice(secrets.choice(enabled_lists)) for _ in range(max_length))
 
     return password
